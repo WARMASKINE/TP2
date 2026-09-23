@@ -1,7 +1,44 @@
 extends Node2D
 
+@export var max_health := 100.0
+@export var health_depletion_rate := 1.0
+
+var health := max_health
+
+@onready var health_bar: ProgressBar = get_node_or_null("HUD/HealthBar")
+@onready var player: CharacterBody2D = $TestPlayer
+
 func _ready() -> void:
+	player.hard_landed.connect(_on_player_hard_landed)
+	player.dash_started.connect(_on_player_dash_started)
+	if health_bar == null:
+		var hud := CanvasLayer.new()
+		hud.name = "HUD"
+		hud.layer = 10
+		add_child(hud)
+		health_bar = ProgressBar.new()
+		health_bar.name = "HealthBar"
+		health_bar.position = Vector2(12, 12)
+		health_bar.size = Vector2(100, 10)
+		health_bar.show_percentage = true
+		hud.add_child(health_bar)
+	health_bar.max_value = max_health
+	health_bar.value = health
 	queue_redraw()
+
+func _on_player_hard_landed() -> void:
+	health = maxf(health - 4.0, 0.0)
+	health_bar.value = health
+
+func _on_player_dash_started() -> void:
+	health = maxf(health - 3.0, 0.0)
+	health_bar.value = health
+
+func _process(delta: float) -> void:
+	health = maxf(health - health_depletion_rate * delta, 0.0)
+	health_bar.value = health
+	if is_zero_approx(health):
+		get_tree().change_scene_to_file("res://scenes/ui/start_menu.tscn")
 
 func _draw() -> void:
 	draw_rect(Rect2(0, 0, 3200, 720), Color("#18252d"))
