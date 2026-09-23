@@ -1,6 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://clspjarsf26dh"]
+[gd_scene load_steps=6 format=3 uid="uid://clspjarsf26dh"]
 
 [ext_resource type="Script" path="res://scripts/player/test_player.gd" id="1_player"]
+[ext_resource type="Texture2D" uid="uid://ce42w2o03bgs4" path="res://assets/sprites/player_racoon/racoon_player-Sheet.png" id="2_raccoon"]
+[ext_resource type="Texture2D" uid="uid://cy1mfpwt2jjhb" path="res://assets/sprites/player_racoon/racoon_player_walking-Sheet.png" id="3_raccoon_walk"]
+[ext_resource type="Texture2D" uid="uid://qdv1ylg825g3" path="res://assets/sprites/player_racoon/racoon_player_air-Sheet.png" id="4_raccoon_air"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape_player"]
 radius = 20.0
@@ -8,6 +11,23 @@ height = 52.0
 
 [node name="TestPlayer" type="CharacterBody2D"]
 script = ExtResource("1_player")
+
+[node name="RaccoonSprite" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("2_raccoon")
+hframes = 16
+
+[node name="WalkingSprite" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(2, 2)
+texture = ExtResource("3_raccoon_walk")
+hframes = 12
+
+[node name="AirSprite" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(2, 2)
+texture = ExtResource("4_raccoon_air")
+hframes = 12
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)
